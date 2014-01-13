@@ -39,10 +39,10 @@ If($Comp -eq $null){
     ## This retrieves the list of installed software on the computer, then formats the output (installed date, version
     ## number, program name). It then sorts the list by name and outputs it to the source location with the proper
     ## naming scheme.
-    Get-WmiObject -class win32_product | select installdate,version,name -Unique | sort name | format-table -autosize >> $filename
+    Get-WmiObject -class win32reg_addremoveprograms | select installdate,version,displayname -Unique | sort displayname | format-table -autosize >> $filename
 }else{
 
     ## This retrieves the installed software list of a remote computer, then formats the output (installed date,
     ## version number, program name). It then sorts the list by name and outputs it to the screen.  
-    Get-WmiObject -ComputerName $Comp -class win32_product | select installdate,version,name -Unique | sort name | format-table -autosize
+    Get-WmiObject -ComputerName $Comp -class win32reg_addremoveprograms | select installdate,version,displayname -Unique | sort displayname | format-table -autosize
 }
