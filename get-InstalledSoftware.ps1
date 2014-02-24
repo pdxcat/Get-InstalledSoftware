@@ -1,10 +1,11 @@
-﻿##       Name: installedsoftware.ps1 
+##       Name: installedsoftware.ps1 
 ##    Written: Sandeep Parmar
 ##       Date: 01/15/2013
 ##    Purpose: To retrieve all of the installed software on a machine.
 ## Parameters: <empty> or <computer name>
 ##                     <empty> Will produce a list of software installed on the local computer. 
 ##             <computer name> Will produce a list of software of the remote computer and output it to the screen.
+##    Edit By: Bartholomew Brandner on 2/23/2014 
 
 Param(
     ## Retrieves the inputted computer name otherwise sets the variable to null.
@@ -39,10 +40,10 @@ If($Comp -eq $null){
     ## This retrieves the list of installed software on the computer, then formats the output (installed date, version
     ## number, program name). It then sorts the list by name and outputs it to the source location with the proper
     ## naming scheme.
-    Get-WmiObject -class win32reg_addremoveprograms | select installdate,version,displayname -Unique | sort displayname | format-table -autosize >> $filename
+    Get-WmiObject -class win32_product | select name, version | sort name | format-table -autosize >> $filename
 }else{
 
     ## This retrieves the installed software list of a remote computer, then formats the output (installed date,
     ## version number, program name). It then sorts the list by name and outputs it to the screen.  
-    Get-WmiObject -ComputerName $Comp -class win32reg_addremoveprograms | select installdate,version,displayname -Unique | sort displayname | format-table -autosize
+    Get-WmiObject -ComputerName $Comp -class win32_product | select name, version | sort name | format-table -autosize
 }
