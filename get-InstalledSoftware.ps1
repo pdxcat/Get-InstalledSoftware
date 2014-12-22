@@ -40,10 +40,10 @@ If($Comp -eq ""){
     ## This retrieves the installed software list of the computer, then formats the output (installed date, version
     ## number, program name). It then sorts the list by name and then outputs it to the source location with the proper
     ## naming scheme.
-    Get-WmiObject -Query "SELECT * FROM SMS_InstalledSoftware" -Namespace "root\cimv2\sms" | Select-Object @{l='InstallDate';e={$_.InstallDate.substring(0,8)}},ProductVersion,ProductName | Sort-Object ProductName | Format-Table -AutoSize | Out-File -Encoding ASCII $filename
+    Get-WmiObject -Query "SELECT * FROM SMS_InstalledSoftware" -Namespace "root\cimv2\sms" | Select-Object InstallDate,ProductVersion,ProductName | Sort-Object ProductName | Format-Table -Property @{Label='InstallDate';Expression={$_.InstallDate.substring(0,8)};Width=12},@{Label='ProductVersion';Expression={$_.ProductVersion};Width=24},ProductName | Out-File -Encoding ASCII $filename
 }else{
 
     ## This retrieves the installed software list of a remote computer, then formats the output (installed date,
     ## version number, program name). It then sorts the list by name and then outputs to the screen.  
-    Get-WmiObject -ComputerName $Comp -Query "SELECT * FROM SMS_InstalledSoftware" -Namespace "root\cimv2\sms" | Select-Object @{l='InstallDate';e={$_.InstallDate.substring(0,8)}},ProductVersion,ProductName | Sort-Object ProductName | Format-Table -AutoSize
+    Get-WmiObject -ComputerName $Comp -Query "SELECT * FROM SMS_InstalledSoftware" -Namespace "root\cimv2\sms" | Select-Object InstallDate,ProductVersion,ProductName | Sort-Object ProductName | Format-Table -Property @{Label='InstallDate';Expression={$_.InstallDate.substring(0,8)};Width=12},@{Label='ProductVersion';Expression={$_.ProductVersion};Width=24},ProductName
 }
